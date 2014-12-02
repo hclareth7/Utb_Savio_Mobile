@@ -1,0 +1,54 @@
+<div class="content-index panel-container">
+    <div class="back-row">
+        <a><img src="img/arrowleft.png" onclick="window.history.back();"></a>
+    </div>
+    <div class="path-mod-forum">
+        <div class="forum-name">
+            <span><img src="img/mod/forum.png"></span><%= MM.util.formatText(forum.name) %>
+        </div>
+        <div class="forum-intro">
+            <%= MM.util.formatText(forum.intro) %>
+            <span><%= forum.numdiscussions %> <%= MM.lang.s("discussions") %></span>
+        </div>
+
+        <% if (!discussions || discussions.length == 0) { %>
+            <div class="forum-empty">
+                <%= MM.lang.s("forumnodiscussionsyet") %>
+            </div>
+        <% } else { %>
+
+        <div class="sync">
+            <label>
+                <input type="checkbox" name="keepsynch" id="keepsynch" data-cmid="<%= forum.cmid %>" data-forumid="<%= forum.id %>"><%= MM.lang.s("keepsynchronising") %>
+            </label>
+        </div>
+
+        <% _.each(discussions, function(discussion) { %>
+        <div class="forum-post first-post">
+            <div class="header">
+                <img class="user-picture" src="<%= MM.util.getMoodleFilePath(discussion.userpictureurl) %>">
+                <a class="author-name" href="#" rel="author"><%= discussion.userfullname %></a>
+                <time><%= MM.util.timestampToUserDate(discussion.created) %></time>
+            </div>
+            <p role="heading" class="subject toogler" data-discussionid="<%= discussion.discussion %>">
+                <%= MM.util.formatText(discussion.subject) %>
+            </p>
+            <div class="discussion-body">
+
+            </div>
+            <div class="reply-info">
+                <span>
+                    <img src="img/message.png"><%= discussion.numreplies %> <%= MM.lang.s("forumnumreplies") %>
+                </span>
+                <% if (discussion.created != discussion.timemodified && discussion.timemodified > discussion.created) { %>
+                <span><img src="img/time.png"><%= MM.util.printTimeAgo(discussion.timemodified) %></span>
+                <% } %>
+            </div>
+        </div>
+        <% }); %>
+
+        <%= MM.util.pagingBar(forum.numdiscussions, page, perpage, "#forum/view/" + forum.course + "/" + forum.cmid + "/:page", ":page") %>
+
+        <% } %>
+    </div>
+</div>
