@@ -1,0 +1,267 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+
+body{
+	font-family: 'roboto';
+}
+
+#head{
+	background: none repeat scroll 0 0 #fafafa;
+    border-bottom: 4px solid #dddbdb;
+    margin-top: 7%;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    text-align: center;
+    width: 100%;
+}
+.logotipo{
+	width: 150px;
+	float: right;
+}
+.txt-titulo{
+	border-right: 1px solid #777777;
+    color: #777777;
+    float: left;
+    font-size: 22px;
+    font-weight: 300;
+    margin-top: 0;
+    padding-bottom: 14px;
+    padding-right: 10px;
+    padding-top: 14px;
+}
+.cont-logo{
+	margin: 0 auto;
+    width: 231px;
+
+}
+.limp{
+	clear: both;
+	line-height: 17;
+}
+
+.cont-form-login{
+	width: 100%;
+}
+
+.cont-imputs{
+	margin: 70px auto 0;
+    width: 85%;
+}
+
+.input-savio{
+	 background: url("../img/input.png") no-repeat scroll right bottom rgba(0, 0, 0, 0);
+	 border:0 none;
+    border-bottom: 1px solid #686868;
+    color: #777777;
+    display: block;
+    font-family: 'roboto';
+    font-size: 18px;
+    font-weight: 300;
+    height: 30px;
+    margin-top: 40px;
+    width: 100%;
+
+}
+
+.input-savio:focus{
+	 background: url("../img/input_focus.png") no-repeat scroll right bottom rgba(0, 0, 0, 0);
+	border-bottom: 1px solid #47A447;
+}
+
+.btn-savio{
+	background: none repeat scroll 0 0 #47a447;
+    border: 0 none;
+    color: #ffffff;
+    cursor: pointer;
+    font-family: roboto;
+    font-size: 18px;
+    font-weight: 300;
+    margin-top: 14px;
+    padding: 10px 0;
+    width: 100%;
+}
+
+
+.cont-ayudas{
+	margin-top: 30px;
+}
+.left{
+	float: left;
+}
+
+.rigth{
+	float: right;
+}
+.cont-ayudas a{
+	text-decoration: none;
+	color: #47A447;
+}
+
+
+
+
+#cuerpo{
+    background: none repeat scroll 0 0 #ffffff;
+    margin: 0 auto;
+    padding-bottom: 50px;
+}   
+
+#cabecera{
+    width: 100%;
+    position: fixed;
+    z-index: 10;
+}
+
+#contenedor-principal{
+    position: relative;
+    z-index: 1;
+    top: 113px;
+
+}
+.barra-estado{
+    background: none repeat scroll 0 0 #47a447;
+    height: 55px;
+}
+
+.nombre-usuario{
+    color: #ffffff;
+    display: block;
+    font-size: 19px;
+    font-weight: lighter;
+    position: relative;
+    top: 13px;
+    width: 45%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+
+.avatar-usuario{
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    border-radius: 40px;
+    float: left;
+    margin-left: 14px;
+    margin-top: 4px;
+    overflow: hidden;
+}
+.avatar-usuario img{
+    border-radius: 40px;
+    display: block;
+    height: 40px;
+    width: 40px;
+}
+
+.bt-opciones{
+     float: right;
+    margin-right: 14px;
+    position: relative;
+    top: -14px;
+}
+
+.barra-menu{
+    background: none repeat scroll 0 0 #ffffff;
+    display: block;
+}
+
+#menu{
+    display: block;
+    height: 58px;
+}
+#menu li{
+    display: block;
+    float: left;
+    list-style: none outside none;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    width: 33.3333%;
+}
+
+#menu li a{
+    margin: 0 auto;
+}
+#menu li a img{
+    display: block;
+    margin: 0 auto;
+    width: 52px;
+}
+
+.titulo-seccion{
+    background: none repeat scroll 0 0 #e6e6e6;
+    border-bottom: 2px solid #e1e2e2;
+    display: block;
+    padding-bottom: 10px;
+    padding-left: 14px;
+    padding-top: 10px;
+    position: fixed;
+    top: 113px;
+    width: 100%;
+    z-index: 10;
+}
+
+.titulo-seccion h1{
+    color: #777777;
+    font-size: 20px;
+    font-weight: lighter;
+    text-transform: uppercase;
+}
+
+.cont-cuerpo{
+    margin: 0 auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    top: 49px;
+    width: 97%;
+}
+.savio-curso{
+    
+}
+.titulo-curso{
+    border-bottom: 1px solid #dadada;
+    color: #777777;
+    display: block;
+    font-weight: 300;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    text-decoration: none;
+}
+
+.cont-curso{
+    border-bottom: 10px solid #f3f5f5;
+    margin-top: 10px;
+    padding-bottom: 24px;
+}
+.curso-opciones{
+    width: 100%;
+}
+.opciones-left{
+    float: left;
+    margin-left: -6px;
+}
+
+.opciones-right{
+     float: right;
+    margin-right: -6px;
+}
+
+.savio-titulo-semana{
+    background: none repeat scroll 0 0 #ccf1c6;
+    color: #777777;
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px;
+    position: relative;
+    top: 10px;
+    width: 77%;
+}
+
+.lista-item-tareas{
+     margin: 20px auto 0;
+    width: 69%;
+}
+

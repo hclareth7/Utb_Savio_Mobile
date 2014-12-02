@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title></title>
+    <meta name="viewport" content="width=device-width">
+    <!--link rel="stylesheet" href="css/layout.css"-->
+    <!--link rel="stylesheet" href="css/styles.css"-->
+    <link rel="stylesheet" href="css/estilo.css">
+
+    <script language="javascript">
+
+// We use this code for handling unexpected errors.
+// Using alert, we are sure that the user get notified in a Mobile device.
+// We add this code at the begining of the index.html and we use only native javascript functions.
+window.onerror = function(msg, url, lineNumber) {
+    if (typeof(msg) === "string") {
+        var error = msg + "\n\nFile: " + url + "\nLine: " + lineNumber;
+// Ommit cordova and 3rd party libs errors.
+if (url.indexOf("cordova.js") == -1 && url.indexOf("externallib") == -1) {
+    window.alert(error);
+}
+} else {
+    var error = msg;
+}
+
+// This may help debugging if we use logging apps in iOs or Android.
+if(typeof(console) !== "undefined" && typeof(console.log) === "function") {
+    console.log(error);
+}
+
+// Let default error handler run.
+return false;
+};
+
+</script>
+<script src="cordova.js"></script>
+<script src="childbrowser.js"></script>
+<script src="webintent.js"></script>
+<script src="PushNotification.js"></script>
+<script src="externallib/jquery.min.js"></script>
+<script src="externallib/jquery.touchSwipe.min.js"></script>
+<script src="externallib/md5.js"></script>
+<script src="externallib/matchMedia.js"></script>
+<script src="externallib/matchMedia.addListener.js"></script>
+<script src="externallib/underscore.js"></script>
+<script src="externallib/backbone.js"></script>
+<script src="externallib/backbone-localstorage.js"></script>
+<script src="lib/mm.js"></script>
+<script src="lib/mm.panels.js"></script>
+<script src="lib/mm.util.js"></script>
+<script src="lib/mm.lang.js"></script>
+<script src="lib/mm.db.js"></script>
+<script src="lib/mm.tpl.js"></script>
+<script src="lib/mm.cache.js"></script>
+<script src="lib/mm.settings.js"></script>
+<script src="lib/mm.widgets.js"></script>
+<script src="lib/mm.sync.js"></script>
+<script src="lib/mm.emulator.js"></script>
+<script src="lib/mm.rdebugger.js"></script>
+<script src="lib/mm.fs.js"></script>
+<script src="lib/funciones.js"></script>
+<script data-main="lib/app.js" src="externallib/require.js"></script>
+<script language="javascript">
+// We should wait to phonegap, if not, we get errors like:
+// http://rickluna.com/wp/2012/04/solving-the-connection-to-the-server-was-unsuccessful-error-in-androidphonegap/
+$(document).bind('deviceready', function() {
+    MM.log('Deviceready fired');
+    MM.deviceReady = true;
+// Store the device locale for further uses.
+/**navigator.globalization.getLocaleName(
+function (locale) {
+MM.lang.locale = locale.value;
+MM.log("Device locale loaded: " + locale.value);
+},
+function () {}
+);**/
+// Disable the back button, exists the app.
+document.addEventListener("backbutton", function() {
+    MM.panels.goBack();
+}, false);
+
+// Call deviceIsReady function in plugins.
+// Plugins may not be able to listen for the deviceready event because it's possible that it was fire
+// when plugins whasn't loaded, we use a timeout of 5 seconds.
+setTimeout(function() {
+    for (var el in MM.plugins) {
+        var plugin = MM.plugins[el];
+
+        if (typeof(plugin.deviceIsReady) == 'function') {
+            plugin.deviceIsReady();
+
+        }
+    }
+}, 5000);
+MM.fs.init();
+});
+
+// This function is for handling when the app is opened using a custom URL SCHEME.
+function handleOpenURL(url) {
+    MM._appLaunchedByURL(url);
+}
+</script>
+
+<style id="mobilecssurl"></style>
+</head>
+<body>
+
+    <div id="add-site" style="display: none">
+
+    </div>
+
+    <div id="manage-accounts" style="display: none">
+
+    </div>
+
+
+
+    <div id="main-wrapper" style="display: none; background-color: white">
+
+
+    <div id="panel-left" class="panel user-menu"></div>
+    <!--div id="panel-center" class="panel"></div-->
+
+    <!--div id="panel-right" class="panel"></div-->
+
+
+</div>
+
+<!--div id="app-dialog">
+<div>
+<div class="modalHeader">
+</div>
+<div class="modalContent">
+</div>
+<div class="modalFooter">
+</div>
+<div class="modalClear"></div>
+</div>
+</div-->
+
+<script type="text/template" id="menu_template">
+    <div class="cuerpo">
+        <div id="cabecera">
+            <div class="barra-estado">
+                <a href="#" class="avatar-usuario"><img src="<%= MM.util.getMoodleFilePath(user.profileimageurl) %>"></a>
+                <label class="nombre-usuario" ><%= user.fullname.split(' ')[0]+" "+user.fullname.split(' ')[2] %></label>
+                <a href="#logout" class="bt-opciones"><img src="img/ic_opciones.png"></a>
+            </div> 
+            <div class="barra-menu">
+                <ul id="menu">
+                    <li class='tab' data-link='mis-cursos'><a href="#"><img src="img/ic_miscursos.png"></a></li>
+                    <li class='tab' data-link='notificaciones'><a href="#"><img src="img/ic_notificaciones.png"></a></li>
+                    <li class='tab' data-link='tareas'><a href="#"><img src="img/ic_tareas.png"></a></li>
+                    <div class="limp"></div>
+                </ul>
+                <div class="limp"></div>
+            </div>
+        </div>
+
+        <div id="contenedor-principal">
+        <div class="section-savio" id="mis-cursos" ok-link='mis-cursos'>
+            <div class="titulo-seccion">
+                <h1>Mis cursos</h1>
+            </div>
+
+            <div class="cont-cuerpo" id="accordion-1">
+                <% _.each(courses, function(course) { %>    
+                    <div class="savio-curso">
+
+                        <a href="#course/contents/<%= course.id %>/section/-1" class="titulo-curso"><%= course.fullname %></a>
+                        <div class="cont-curso" style="display:none;" >
+                            <div class="curso-opciones">
+                                <a href="#" class="opciones-left"><img src="img/ic_contenido.png"></a>
+                                <a href="#" class="opciones-right"><img src="img/ic_participantes.png"></a>
+                            </div>
+                            <div class="info-corso" >
+                            <div class="savio-item-semana">
+                                <h3 class="savio-titulo-semana">General</h3>
+                                <ul class="lista-item-tareas">
+                                    <li>Python para todos</li>
+                                    <li>Python para todos</li>
+                                    <li>Python para todos</li>
+                                </ul>
+                            </div>
+
+                            <div class="savio-item-semana">
+                                <h3 class="savio-titulo-semana">General</h3>
+                                <ul class="lista-item-tareas">
+                                    <li>Python para todos</li>
+                                    <li>Python para todos</li>
+                                    <li>Python para todos</li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <% }); %>
+                </div>
+                </div>
+
+<div class="section-savio" id="notificaciones" ok-link='notificaciones'>
+    <div class="titulo-seccion">
+        <h1>Notificaciones</h1>
+        <div>
+            
+        </div>
+    </div>
+
+</div>
+
+<div class="section-savio" id="tareas" ok-link='tareas'>
+    <div class="titulo-seccion">
+        <h1>Tareas</h1>
+    </div>
+</div>
+</div>  
+
+
+</div>
+
+</script>
+
+
+<script type="text/template" id="settings_template">
+    <div class="settings-list">
+        <ul class="nav nav-v">
+            <li class="nav-item">
+                <a href="#settings/general/" class="menu1 touch-row"><%= MM.lang.s("general") %><br></a>
+            </li>
+            <li class="nav-item">
+                <a href="#settings/sync/" class="menu1 touch-row"><%= MM.lang.s("synchronization") %><br></a>
+            </li>
+            <li class="nav-item">
+                <a href="#settings/spaceusage/" class="menu1 touch-row"><%= MM.lang.s("spaceusage") %><br></a>
+            </li>
+            <li class="nav-item">
+                <a href="#settings/development/" class="menu1 touch-row"><%= MM.lang.s("development") %><br></a>
+            </li>
+            <li class="nav-item">
+                <a href="#settings/reportbug/" class="menu1 touch-row"><%= MM.lang.s("reportabug") %><br></a>
+            </li>
+            <li class="nav-item">
+                <a href="#settings/about/" class="menu1 touch-row"><%= MM.lang.s("about") %><br></a>
+            </li>
+            <% _.each(plugins, function(plugin) { %>
+                <li class="nav-item">
+                    <a href="#settings/<%= plugin.menuURL %>" class="menu1 touch-row"><%= MM.lang.s(plugin.name) %><br></a>
+                </li>
+                <% }); %>
+        </ul>
+    </div>
+</script>
+
+
+<!--LOGIN DE USUARIO-->
+<script type="text/template" id="add-site_template">
+
+    <div id="cuerpo">
+        <div id="head">
+            <div class="cont-logo">
+                <label class="txt-titulo">SAVIO</label>
+                <img src="img/logo_savio.png" class="logotipo" />
+                <div class="limp"></div>
+            </div>
+        </div>
+        <div class="cont-form-login">
+            <div class="cont-imputs">
+                <form action="" novalidate>
+                    <input type="url" id="url" autocapitalize="off" autocorrect="off" >
+
+                    <input type="text" class="input-savio"  id="username" placeholder="Usuario" autocapitalize="off" autocorrect="off" />
+
+                    <input type="password" id="password" class="input-savio" placeholder="Contraseña">
+                    <br>
+                    <input type="submit" name="add"   id="addsitebutton"   value="Entrar a savio" class="btn-savio">
+                    <!--input type="button" name="reset" id="resetsitebutton" value="Limpiar" class="btn-savio"-->
+
+                    <div class="cont-ayudas">
+                        <a href="#helpmelogin" class="left">No puedo acceder</a>
+                        <a href="#manage-accounts" class="rigth">Gestionar cuenta</a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+</script>
+
+<!--FIN LOGIN DE USUARIO-->
+
+
+<script type="text/template" id="manage-accounts_template">
+    <h1 class="app-ico">
+        <img src="img/login-logo.png" alt="Moodle">
+    </h1>
+    <% _.each(sites, function(site) { %>
+        <div class="accounts">
+            <a class="account-details" onclick="MM.loadSite('<%= site.id %>')">
+                <img src="<%= MM.util.getMoodleFilePath(site.userpictureurl, 1, site.id) %>">
+                <div>
+                    <span class="account-fullname"><%= MM.util.formatText(site.fullname) %></span>
+                    <span class="account-sitename"><%= MM.util.formatText(site.sitename) %></span>
+                    <span class="account-siteurl"><%= site.siteurl %></span>
+                </div>
+            </a>
+            <span class="delete-site" >
+                <a class="btn" onclick="MM.settings.deleteSite('<%= site.id %>')"><%= MM.lang.s("deletesiteb") %></a>
+            </span>
+        </div>
+        <% });%>
+    <div class="add-site">
+        <a class="btn" href="#add-site"><%= MM.lang.s("add") %></a>
+    </div>
+</script>
+
+</body>
+</html>
